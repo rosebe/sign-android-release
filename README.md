@@ -1,6 +1,6 @@
 <div align="center">
-<h1>Sign Android Release</h1>
-<p>A GitHub action to sign an APK or AAB.</p>
+<h1>Sign Android Release v2</h1>
+<p>Sign your Android app using GitHub actions, without modifying any existing code. Supports APK/AAB.</p>
 
 ![Workflow](https://img.shields.io/github/actions/workflow/status/ilharp/sign-android-release/build.yml?branch=master&style=flat-square)
 [![License](https://img.shields.io/github/license/ilharp/sign-android-release?style=flat-square)](https://github.com/ilharp/sign-android-release/blob/master/LICENSE)
@@ -15,7 +15,7 @@ This action will help you sign an Android `.apk` or `.aab` (Android App Bundle) 
 
 ```yml
 steps:
-  - uses: ilharp/sign-android-release@v1 # Or use @nightly
+  - uses: ilharp/sign-android-release@v2 # Or use @nightly
     name: Sign app APK
     id: sign_app
     with:
@@ -24,10 +24,10 @@ steps:
       keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
       keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      buildToolsVersion: 33.0.0
+      buildToolsVersion: 36.0.0
 
   # Upload your signed file if you want
-  - uses: actions/upload-artifact@v3
+  - uses: actions/upload-artifact@v4
     with:
       name: Signed app bundle
       path: ${{steps.sign_app.outputs.signedFile}}
@@ -37,7 +37,7 @@ If you have multiple files to sign:
 
 ```yaml
 steps:
-  - uses: ilharp/sign-android-release@v1 # Or use @nightly
+  - uses: ilharp/sign-android-release@v2 # Or use @nightly
     id: sign_app
     with:
       releaseDir: app/build/outputs/apk/release
@@ -45,7 +45,7 @@ steps:
       keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
       keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-      buildToolsVersion: 33.0.0
+      buildToolsVersion: 36.0.0
 
   - uses: jungwinter/split@v2
     id: signed_files
@@ -54,7 +54,7 @@ steps:
       separator: ':'
 
   - name: Example Release
-    uses: "marvinpinto/action-automatic-releases@latest"
+    uses: "marvinpinto/action-automatic-releases@v1.2.1"
     with:
       repo_token: "${{ secrets.GITHUB_TOKEN }}"
       automatic_release_tag: "latest"
@@ -79,7 +79,7 @@ signingKey|ANDROID_SIGNING_KEY|**Required.** The base64 encoded signing key used
 keyAlias|ANDROID_KEY_ALIAS|**Required.** The alias of your signing key.
 keyStorePassword|ANDROID_KEYSTORE_PASSWORD|**Required.** The password for your signing keystore.
 keyPassword|ANDROID_KEY_PASSWORD|**Optional.** The private password for your signing key.
-buildToolsVersion|ANDROID_BUILD_TOOLS_VERSION|**Optional.** The version of Android build tools to use. Defaults to `33.0.0`.
+buildToolsVersion|ANDROID_BUILD_TOOLS_VERSION|**Optional.** The version of Android build tools to use. Defaults to `36.0.0`.
 
 You can prepare your `signingKey` by running this command:
 
